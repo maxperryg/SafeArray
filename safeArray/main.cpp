@@ -97,7 +97,7 @@ class SafeMatrix{
 private:
     int verticalLow, verticalHigh, horizontalLow, horizontalHigh;
     SafeArray<SafeArray<T>> p;
-    int **p;
+    //int **p;
 public:
     
     //default constructor
@@ -117,7 +117,7 @@ public:
         verticalHigh = rowsCols-1;
         horizontalLow = 0;
         horizontalHigh = rowsCols-1;
-        p = new int*[rowsCols];
+        p = SafeArray<T>rowsCols];
         for(int i = 0; i < rowsCols; ++i){
             p[i] = new int[rowsCols];
         }
@@ -125,13 +125,13 @@ public:
     
     
     //Two parameter constructor for size bounds but not specific number bounds
-    //SafeMatrix(10) would give you a 10X10 matrix with indexes from 0-9
+    //SafeMatrix(4, 5) would give you a 10X5 matrix with indexes from 0-9
     SafeMatrix(int vertical, int horizontal){
         verticalLow = 0;
         verticalHigh = vertical-1;
         horizontalLow = 0;
         horizontalHigh = horizontal-1;
-        p = new int*[vertical];
+        p = new T[vertical];
         for(int i = 0; i < vertical; ++i){
             p[i] = new int[horizontal];
         }
@@ -149,27 +149,52 @@ public:
         verticalHigh = rowBottom;
         horizontalLow = colLeft;
         horizontalHigh = colRight;
-        p = new int*[rowBottom-rowTop+1];
+        p = new T[rowBottom-rowTop+1];
         for(int i = 0; i < rowBottom-rowTop+1; ++i){
             p[i] = new int[colRight-colLeft+1];
         }
     }
     
-    ~SafeMatrix(){
-        for(int i = 0; i < verticalHigh-verticalLow+1 ; ++i) {
-            delete [] p[i];
-        }
-        delete [] p;
-    }
+//    ~SafeMatrix(){
+//        for(int i = 0; i < verticalHigh-verticalLow+1 ; ++i) {
+//            delete [] p[i];
+//        }
+//        delete [] p;
+//    }
     
-    int& operator[](int i){
+    SafeArray<T>& operator[](int i){
         if((i<verticalLow || i>verticalHigh) || (i<horizontalLow || i>horizontalHigh)){
             cout<< "constructor error in bounds definition"<<endl;
             exit(1);
-            
         }
-        return p[i-low];
+        return p[i-verticalLow];
     }
+    
+    template <class U>
+    friend ostream& operator<<(ostream& os, SafeMatrix<U> s);
+    
+//    SafeMatrix & operator=(const SafeMatrix & s){
+//        if(this==&s) return *this;
+//        for(int i = 0; i < verticalHigh-verticalLow+1 ; ++i) {
+//            delete [] p[i];
+//        }
+//        delete [] p;
+//        int size = (s.VerticalHigh-s.VerticalLow)+1;
+//        p=new T[size];
+//        for(int i=0;i<size;i++){
+//            p[i]=s.p[i];
+//        }
+//        high = s.high;
+//        low = s.low;
+//        return *this;
+//    }
+};
+
+template <class T>
+ostream& operator<<(ostream& os, SafeMatrix<T> s){
+    int size= s.verticalHigh - s.verticalLow+1;
+    for(int i=0; i<size; i++)cout<<s[i]<<endl;
+    return os;
 };
 
 int main(){
@@ -184,6 +209,14 @@ int main(){
         stringArray[i]="string";
     }
     cout<<stringArray<<endl;
+    
+    SafeMatrix<int> intMatrix(5);
+    for(int i=0;i<5;i++){
+        for(int j=0;j<5;j++){
+            intMatrix[i][j] = j;
+        }
+    }
+    cout<<intMatrix<<endl;
 
 
     return 0;
