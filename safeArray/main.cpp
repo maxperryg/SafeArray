@@ -12,174 +12,110 @@ using namespace std;
 template <class T>
 class SafeArray{
 private:
-    int low, high;
-    T* p;
+    int verticalLow, verticalHigh, horizontalLow, horizontalHigh, row;
+    T** p;
 public:
     
     // default constructor
     // allows for writing things like SA a;
+    SafeArray(){
+        verticalLow=0;
+        verticalHigh=-1;
+        horizontalLow=0;
+        horizontalHigh=-1;
+        p=NULL;
+    }
     
-    SafeArray(){low=0; high=-1;p=NULL;}
-    
+    //One parameter constructor to create a square matrix
+    SafeArray(int size){
+        verticalLow=0;
+        verticalHigh=size-1;
+        horizontalLow=0;
+        horizontalHigh=size-1;
+        p=new T*[size];
+        for(int i=0;i<size;i++){
+            p[i]=new T[size];
+        }
+    }
     
     // 2 parameter constructor lets us write
-    // SA x(10,20);
-    
-    SafeArray(int l, int h){
-        if((h-l+1)<=0)
-        {cout<< "constructor error in bounds definition"<<endl;
-            exit(1);}
-        low=l;
-        high=h;
-        p=new T[(h-l)+1];
-    }
-    // single parameter constructor lets us
-    // create a SA almost like a "standard" one by writing
-    // SA x(10); and getting an array x indexed from 0 to 9
-    
-    SafeArray(int i){
-        low=0;
-        high=i-1;
-        p=new T[i];
-    }
-    // copy constructor for pass by value and
-    // initialization
-    
-    SafeArray(const SafeArray & s){
-        int size=s.high-s.low+1;
-        p=new T[size];
-        for(int i=0; i<size; i++)
-            p[i]=s.p[i];
-        low=s.low;
-        high=s.high;
-    }
-    // destructor
-    
-    ~SafeArray(){
-        delete [] p;
-    }
-    
-    T& operator[](int i){
-        if(i<low || i>high){
-            cout<<"index "<<i<<" out of range"<<endl;
-            exit(1);
-        }
-        return p[i-low];
-    }
-    
-    SafeArray & operator=(const SafeArray & s){
-        if(this==&s) return *this;
-        delete []p;
-        int size = (s.high-s.low)+1;
-        p=new T[size];
-        for(int i=0;i<size;i++){
-            p[i]=s.p[i];
-        }
-        high = s.high;
-        low = s.low;
-        return *this;
-    }
-    template <class U>
-    friend ostream& operator<<(ostream& os, SafeArray<U> s);
-};
-
-template <class T>
-ostream& operator<<(ostream& os, SafeArray<T> s){
-    int size=s.high-s.low+1;
-    for(int i=0; i<size; i++)
-        cout<<s.p[i]<<endl;
-    return os;
-};
-
-template<class T>
-class SafeMatrix{
-    
-private:
-    int verticalLow, verticalHigh, horizontalLow, horizontalHigh;
-    SafeArray<SafeArray<T>> p;
-    //int **p;
-public:
-    
-    //default constructor
-    //SafeMatrix SM();
-    SafeMatrix(){
-        verticalLow = 0;
-        verticalHigh = -1;
-        horizontalLow = 0;
-        horizontalHigh = -1;
-        p = NULL;
-    }
-    
-    //one parameter constructor for square matrix
-    
-    SafeMatrix(int rowsCols){
-        verticalLow = 0;
-        verticalHigh = rowsCols-1;
-        horizontalLow = 0;
-        horizontalHigh = rowsCols-1;
-        p = SafeArray<T>rowsCols];
-        for(int i = 0; i < rowsCols; ++i){
-            p[i] = new int[rowsCols];
+    // SA x(10,20) and get a safe 10X20 matrix;
+    SafeArray(int verticalSize, int horizontalSize){
+        verticalLow=0;
+        verticalHigh=verticalSize-1;
+        horizontalLow=0;
+        horizontalHigh=horizontalSize-1;
+        p=new T*[verticalSize];
+        for(int i=0;i<verticalSize;i++){
+            p[i]=new T[horizontalSize];
         }
     }
     
-    
-    //Two parameter constructor for size bounds but not specific number bounds
-    //SafeMatrix(4, 5) would give you a 10X5 matrix with indexes from 0-9
-    SafeMatrix(int vertical, int horizontal){
-        verticalLow = 0;
-        verticalHigh = vertical-1;
-        horizontalLow = 0;
-        horizontalHigh = horizontal-1;
-        p = new T[vertical];
-        for(int i = 0; i < vertical; ++i){
-            p[i] = new int[horizontal];
-        }
-    }
-    
-    //Four parameter constructor for specific bounds on rows and columns
-    //SafeMatrix(2,4,3,6) would give you a 3 rows (with index from 2 to 4) by 4 columns (with index from 3 to 6) matrix
-    SafeMatrix(int rowTop, int rowBottom, int colLeft, int colRight){
-        if((rowBottom-rowTop+1)<=0 || (colRight-colLeft+1)<=0){
+    // 4 parameter constructor lets us set bounds on each dimension
+    //SA(2,4,5,7); is a 3X3 matrix with indexes from 2->4 and 5->7
+    SafeArray(int vLow, int vHigh, int hLow, int hHigh){
+        if((vHigh-vLow+1)<=0 || (hHigh-hLow+1)<=0){
             cout<< "constructor error in bounds definition"<<endl;
             exit(1);
             
         }
-        verticalLow = rowTop;
-        verticalHigh = rowBottom;
-        horizontalLow = colLeft;
-        horizontalHigh = colRight;
-        p = new T[rowBottom-rowTop+1];
-        for(int i = 0; i < rowBottom-rowTop+1; ++i){
-            p[i] = new int[colRight-colLeft+1];
+        verticalLow=vLow;
+        verticalHigh=vHigh;
+        horizontalLow=hLow;
+        horizontalHigh=hHigh;
+        p=new T*[(verticalHigh-verticalLow)+1];
+        for(int i=0;i<((verticalHigh-verticalLow)+1);i++){
+            p[i]=new T[((horizontalHigh-horizontalLow)+1)];
         }
     }
     
-//    ~SafeMatrix(){
-//        for(int i = 0; i < verticalHigh-verticalLow+1 ; ++i) {
-//            delete [] p[i];
-//        }
-//        delete [] p;
-//    }
+    // copy constructor for pass by value and
+    // initialization
+    SafeArray(const SafeArray & s){
+        int size=s.verticalHigh-s.verticalLow+1;
+        p= new T*[size];
+        for(int i=0; i<size; i++){
+            p[i]=new T[s.horizontalHigh-s.horizontalLow+1];
+            for(int j=0;j<(s.horizontalHigh-s.horizontalLow+1);j++){
+                p[i][j] = s.p[i][j];
+            }
+        }
+        verticalLow=s.verticalLow;
+        verticalHigh=s.verticalHigh;
+        horizontalLow=s.horizontalLow;
+        horizontalHigh=s.horizontalHigh;
+    }
+    // destructor
     
-    SafeArray<T>& operator[](int i){
-        if((i<verticalLow || i>verticalHigh) || (i<horizontalLow || i>horizontalHigh)){
-            cout<< "constructor error in bounds definition"<<endl;
+    ~SafeArray(){
+        int size=verticalHigh-verticalLow+1;
+        for(int i=0;i<size;i++){
+            delete [] p[i];
+        }
+        delete [] p;
+    }
+    
+    T* operator[](int r){
+        if(r<verticalLow || r>verticalHigh){
+            cout<<"index "<<r<<" out of range"<<endl;
             exit(1);
         }
-        return p[i-verticalLow];
+        row = r-verticalLow;
+        return p[row];
     }
     
-    template <class U>
-    friend ostream& operator<<(ostream& os, SafeMatrix<U> s);
+    T operator[](short int c){
+        if(c<horizontalLow || c>horizontalHigh){
+            cout<<"index "<<c<<" out of range"<<endl;
+            exit(1);
+        }
+        return *p[row][c-horizontalLow];
+    }
     
-//    SafeMatrix & operator=(const SafeMatrix & s){
+//    SafeArray & operator=(const SafeArray & s){
 //        if(this==&s) return *this;
-//        for(int i = 0; i < verticalHigh-verticalLow+1 ; ++i) {
-//            delete [] p[i];
-//        }
-//        delete [] p;
-//        int size = (s.VerticalHigh-s.VerticalLow)+1;
+//        delete []p;
+//        int size = (s.high-s.low)+1;
 //        p=new T[size];
 //        for(int i=0;i<size;i++){
 //            p[i]=s.p[i];
@@ -188,35 +124,37 @@ public:
 //        low = s.low;
 //        return *this;
 //    }
+    template <class U>
+    friend ostream& operator<<(ostream& os, SafeArray<U> s);
 };
 
 template <class T>
-ostream& operator<<(ostream& os, SafeMatrix<T> s){
-    int size= s.verticalHigh - s.verticalLow+1;
-    for(int i=0; i<size; i++)cout<<s[i]<<endl;
+ostream& operator<<(ostream& os, SafeArray<T> s){
+    int size=s.verticalHigh-s.verticalLow+1;
+    for(int i=0; i<size; i++){
+        for(int j=0; j<(s.horizontalHigh-s.horizontalLow+1); j++){
+            cout<<s.p[i][j]<<" ";
+        }
+        cout<<endl;
+    }
     return os;
 };
 
-int main(){
-    SafeArray<int> intArray(10);
-    for(int i=0;i<10;i++){
-        intArray[i]=i;
-    }
-    cout<<intArray<<endl;
 
-    SafeArray<string> stringArray(10);
-    for(int i=0;i<10;i++){
-        stringArray[i]="string";
-    }
-    cout<<stringArray<<endl;
-    
-    SafeMatrix<int> intMatrix(5);
-    for(int i=0;i<5;i++){
-        for(int j=0;j<5;j++){
-            intMatrix[i][j] = j;
+int main(){
+    SafeArray<int> intArray(5,10,3,4);
+    for(int i=5;i<=10;i++){
+        for(int j=3;j<=4;j++){
+            intArray[i][j]=5;
         }
     }
-    cout<<intMatrix<<endl;
+    cout<<intArray;
+//    SafeArray<string> stringArray(10);
+//    for(int i=0;i<10;i++){
+//        stringArray[i]="string";
+//    }
+//    cout<<stringArray<<endl;
+
 
 
     return 0;
