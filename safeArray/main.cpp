@@ -63,8 +63,8 @@ public:
         verticalHigh=vHigh;
         horizontalLow=hLow;
         horizontalHigh=hHigh;
-        p=new T*[(verticalHigh-verticalLow)+1];
-        for(int i=0;i<((verticalHigh-verticalLow)+1);i++){
+        p= new T*[verticalHigh-verticalLow+1];
+        for(int i=0;i<(verticalHigh-verticalLow+1);i++){
             p[i]=new T[((horizontalHigh-horizontalLow)+1)];
         }
     }
@@ -95,35 +95,64 @@ public:
         delete [] p;
     }
     
-    T* operator[](int r){
+    template <class B>
+    class Proxy {
+    public:
+        Proxy(B* pass){
+            array = pass;
+        }
+        
+        B& operator[](int index) {
+            cout<<"\n this is also being called\n";
+            return array[index];
+        }
+    private:
+        B* array;
+    };
+    
+    Proxy<T> operator[](int r){
         if(r<verticalLow || r>verticalHigh){
             cout<<"index "<<r<<" out of range"<<endl;
             exit(1);
         }
         row = r-verticalLow;
-        return p[row];
+        cout<<"\n this is being called\n";
+        return Proxy<T>(p[row]);
     }
-    
-    T operator[](short int c){
-        if(c<horizontalLow || c>horizontalHigh){
-            cout<<"index "<<c<<" out of range"<<endl;
-            exit(1);
-        }
-        return *p[row][c-horizontalLow];
-    }
-    
-//    SafeArray & operator=(const SafeArray & s){
-//        if(this==&s) return *this;
-//        delete []p;
-//        int size = (s.high-s.low)+1;
-//        p=new T[size];
-//        for(int i=0;i<size;i++){
-//            p[i]=s.p[i];
+//
+//    T operator[](short int c){
+//        if(c<horizontalLow || c>horizontalHigh){
+//            cout<<"index "<<c<<" out of range"<<endl;
+//            exit(1);
 //        }
-//        high = s.high;
-//        low = s.low;
-//        return *this;
+//        cout<<"\n this is also being called\n";
+//        return *p[row][c-horizontalLow];
 //    }
+    
+    SafeArray & operator=(const SafeArray & s){
+        if(this==&s) return *this;
+        
+        int size=verticalHigh-verticalLow+1;
+        for(int i=0;i<size;i++){
+            delete [] p[i];
+        }
+        delete [] p;
+        
+        size=s.verticalHigh-s.verticalLow+1;
+        p=new T*[size];
+        for(int i=0;i<size;i++){
+            p[i]=new T[s.horizontalHigh-s.horizontalLow+1];
+            for(int j=0;j<(s.horizontalHigh-s.horizontalLow+1);j++){
+                p[i][j] = s.p[i][j];
+            }
+        }
+        verticalLow=s.verticalLow;
+        verticalHigh=s.verticalHigh;
+        horizontalLow=s.horizontalLow;
+        horizontalHigh=s.horizontalHigh;
+        return *this;
+    }
+    
     template <class U>
     friend ostream& operator<<(ostream& os, SafeArray<U> s);
 };
@@ -132,7 +161,9 @@ template <class T>
 ostream& operator<<(ostream& os, SafeArray<T> s){
     int size=s.verticalHigh-s.verticalLow+1;
     for(int i=0; i<size; i++){
-        for(int j=0; j<(s.horizontalHigh-s.horizontalLow+1); j++){
+        size=s.horizontalHigh-s.horizontalLow+1;
+        for(int j=0; j<size; j++){
+            //cout<<"s.p[i] is  "<<s.p[i];
             cout<<s.p[i][j]<<" ";
         }
         cout<<endl;
@@ -142,11 +173,13 @@ ostream& operator<<(ostream& os, SafeArray<T> s){
 
 
 int main(){
-    SafeArray<int> intArray(5,10,3,4);
-    for(int i=5;i<=10;i++){
-        for(int j=3;j<=4;j++){
-            intArray[i][j]=5;
+    SafeArray<int> intArray(5,7, 5, 7);
+    for(int i=5;i<=7;i++){
+        for(int j=5;j<=7;j++){
+            intArray[i][j]=j;
+            cout<<intArray[i][j]<<" ";
         }
+        cout<<endl;
     }
     cout<<intArray;
 //    SafeArray<string> stringArray(10);
