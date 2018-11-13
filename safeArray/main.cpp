@@ -137,9 +137,11 @@ public:
     class Proxy {
         private:
             T* array;
+        int lowI;
         public:
-            Proxy(T* pass){
+            Proxy(T* pass, int low){
                 array = pass;
+                lowI = low;
             }
         
             ~Proxy(){
@@ -147,7 +149,7 @@ public:
             }
         
             T& operator[](int index) {
-                return array[index];
+                return array[index-lowI];
             }
     };
     
@@ -157,16 +159,26 @@ public:
             exit(1);
         }
         row = r-verticalLow;
-        Proxy proxy(p[row]);
+        Proxy proxy(p[row],horizontalLow);
         return proxy;
     }
+    
+//    SafeArray<T> operator*(const SafeArray &s){
+//        if(width!= s.height){
+//            cout<<"The width of the first and the height of the second need to be the same"<<endl;
+//            exit(1);
+//        }
+//        SafeArray<T> answer(height,s.width);
+//        
+//        
+//    }
     
     template <class U>
     friend ostream& operator<<(ostream& os, SafeArray<U> s);
 };
 
 template <class T>
-ostream& operator<<(ostream& os, SafeArray<T>& s){
+ostream& operator<<(ostream& os, SafeArray<T> s){
     for(int i=0; i<s.height; i++){
         for(int j=0; j<s.width; j++){
             cout<<s.p[i][j]<<" ";
