@@ -10,7 +10,7 @@
 using namespace std;
 
 template <class T>
-class SafeArray{
+class SafeMatrix{
 private:
     int verticalLow, verticalHigh, horizontalLow, horizontalHigh, row, height, width;
     T** p;
@@ -18,7 +18,7 @@ public:
     
     // default constructor
     // allows for writing things like SA a;
-    SafeArray(){
+    SafeMatrix(){
         verticalLow=0;
         verticalHigh=-1;
         horizontalLow=0;
@@ -29,7 +29,7 @@ public:
     }
     
     //One parameter constructor to create a square matrix
-    SafeArray(int size){
+    SafeMatrix(int size){
         verticalLow=0;
         verticalHigh=size-1;
         horizontalLow=0;
@@ -44,7 +44,7 @@ public:
     
     // 2 parameter constructor lets us write
     // SA x(10,20) and get a safe 10X20 matrix;
-    SafeArray(int verticalSize, int horizontalSize){
+    SafeMatrix(int verticalSize, int horizontalSize){
         verticalLow=0;
         verticalHigh=verticalSize-1;
         horizontalLow=0;
@@ -59,7 +59,7 @@ public:
     
     // 4 parameter constructor lets us set bounds on each dimension
     //SA(2,4,5,7); is a 3X3 matrix with indexes from 2->4 and 5->7
-    SafeArray(int vLow, int vHigh, int hLow, int hHigh){
+    SafeMatrix(int vLow, int vHigh, int hLow, int hHigh){
         if((vHigh-vLow+1)<=0 || (hHigh-hLow+1)<=0){
             cout<< "constructor error in bounds definition"<<endl;
             exit(1);
@@ -79,7 +79,7 @@ public:
     
     // copy constructor for pass by value and
     // initialization
-    SafeArray(const SafeArray& s){
+    SafeMatrix(const SafeMatrix& s){
         verticalLow=s.verticalLow;
         verticalHigh=s.verticalHigh;
         horizontalLow=s.horizontalLow;
@@ -99,7 +99,7 @@ public:
     }
     
     // destructor
-    ~SafeArray(){
+    ~SafeMatrix(){
         for(int i=0;i<height;i++){
             delete [] p[i];
         }
@@ -107,7 +107,7 @@ public:
     }
     
     
-    SafeArray& operator=(const SafeArray &s){
+    SafeMatrix& operator=(const SafeMatrix &s){
         if(this==&s) return *this;
         
         for(int i=0;i<height;i++){
@@ -168,12 +168,12 @@ public:
         return proxy;
     }
     
-    SafeArray<T> operator*(const SafeArray &s){
+    SafeMatrix<T> operator*(const SafeMatrix &s){
         if(width!= s.height){
             cout<<"The width of the first and the height of the second need to be the same"<<endl;
             exit(1);
         }
-        SafeArray<T> answer(height,s.width);
+        SafeMatrix<T> answer(height,s.width);
         for (int r = 0; r < answer.height; r++) {
             for (int c = 0; c < answer.width; c++) {
                 answer[r][c]=0;
@@ -186,11 +186,11 @@ public:
     }
     
     template <class U>
-    friend ostream& operator<<(ostream& os, SafeArray<U> s);
+    friend ostream& operator<<(ostream& os, SafeMatrix<U> s);
 };
 
 template <class T>
-ostream& operator<<(ostream& os, SafeArray<T> s){
+ostream& operator<<(ostream& os, SafeMatrix<T> s){
     for(int i=0; i<s.height; i++){
         for(int j=0; j<s.width; j++){
             cout<<s.p[i][j]<<" ";
@@ -202,7 +202,7 @@ ostream& operator<<(ostream& os, SafeArray<T> s){
 
 
 int main(){
-    SafeArray<int> intArrayA(5,7, 5, 7);
+    SafeMatrix<int> intArrayA(5,7, 5, 7);
     for(int i=5;i<=7;i++){
         for(int j=5;j<=7;j++){
             intArrayA[i][j]=j;
@@ -210,7 +210,7 @@ int main(){
     }
     cout<<intArrayA<<endl;
     
-    SafeArray<int> intArrayB(5,7, 5, 7);
+    SafeMatrix<int> intArrayB(5,7, 5, 7);
     for(int i=5;i<=7;i++){
         for(int j=5;j<=7;j++){
             intArrayB[i][j]=j;
