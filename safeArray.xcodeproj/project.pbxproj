@@ -43,7 +43,7 @@
 		7282E21D21878A8C00B98226 = {
 			isa = PBXGroup;
 			children = (
-				7282E22821878A8C00B98226 /* safeArray */,
+				7282E22821878A8C00B98226 /* safeMatrix */,
 				7282E22721878A8C00B98226 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,13 +56,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7282E22821878A8C00B98226 /* safeArray */ = {
+		7282E22821878A8C00B98226 /* safeMatrix */ = {
 			isa = PBXGroup;
 			children = (
 				7282E22921878A8C00B98226 /* main.cpp */,
 				7280E192219CE38100A7C801 /* SafeMatrix.cpp */,
 			);
-			path = safeArray;
+			path = safeMatrix;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
