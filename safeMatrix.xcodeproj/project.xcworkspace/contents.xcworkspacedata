@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:safeArray.xcodeproj">
+      location = "self:/Users/MaxGrossman/Documents/C++WorkSpace/safeArray/safeMatrix.xcodeproj">
    </FileRef>
 </Workspace>

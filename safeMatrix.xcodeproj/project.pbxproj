@@ -25,7 +25,7 @@
 
 /* Begin PBXFileReference section */
 		7280E192219CE38100A7C801 /* SafeMatrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SafeMatrix.cpp; sourceTree = "<group>"; };
-		7282E22621878A8C00B98226 /* safeArray */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = safeArray; sourceTree = BUILT_PRODUCTS_DIR; };
+		7282E22621878A8C00B98226 /* safeMatrix */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = safeMatrix; sourceTree = BUILT_PRODUCTS_DIR; };
 		7282E22921878A8C00B98226 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 		7282E22721878A8C00B98226 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7282E22621878A8C00B98226 /* safeArray */,
+				7282E22621878A8C00B98226 /* safeMatrix */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,9 +68,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7282E22521878A8C00B98226 /* safeArray */ = {
+		7282E22521878A8C00B98226 /* safeMatrix */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7282E22D21878A8C00B98226 /* Build configuration list for PBXNativeTarget "safeArray" */;
+			buildConfigurationList = 7282E22D21878A8C00B98226 /* Build configuration list for PBXNativeTarget "safeMatrix" */;
 			buildPhases = (
 				7282E22221878A8C00B98226 /* Sources */,
 				7282E22321878A8C00B98226 /* Frameworks */,
@@ -80,9 +80,9 @@
 			);
 			dependencies = (
 			);
-			name = safeArray;
+			name = safeMatrix;
 			productName = safeArray;
-			productReference = 7282E22621878A8C00B98226 /* safeArray */;
+			productReference = 7282E22621878A8C00B98226 /* safeMatrix */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -99,7 +99,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7282E22121878A8C00B98226 /* Build configuration list for PBXProject "safeArray" */;
+			buildConfigurationList = 7282E22121878A8C00B98226 /* Build configuration list for PBXProject "safeMatrix" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -111,7 +111,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7282E22521878A8C00B98226 /* safeArray */,
+				7282E22521878A8C00B98226 /* safeMatrix */,
 			);
 		};
 /* End PBXProject section */
@@ -259,7 +259,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7282E22121878A8C00B98226 /* Build configuration list for PBXProject "safeArray" */ = {
+		7282E22121878A8C00B98226 /* Build configuration list for PBXProject "safeMatrix" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7282E22B21878A8C00B98226 /* Debug */,
@@ -268,7 +268,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7282E22D21878A8C00B98226 /* Build configuration list for PBXNativeTarget "safeArray" */ = {
+		7282E22D21878A8C00B98226 /* Build configuration list for PBXNativeTarget "safeMatrix" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7282E22E21878A8C00B98226 /* Debug */,
